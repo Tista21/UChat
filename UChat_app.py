@@ -6,12 +6,11 @@ import os
 from langchain_core.prompts import PromptTemplate
 from langchain_core.runnables import RunnableParallel, RunnablePassthrough, RunnableLambda
 from langchain_core.output_parsers import StrOutputParser
-st.title('CaLcu Chat')
+st.title('UChat')
 openai_api_key = st.sidebar.text_input('OpenAI API Key')
 video_id = st.sidebar.text_input('Enter video ID')
 Langu = st.sidebar.text_input('Enter language code')
 def generate_response(input_text):
-  @tool
   video_id = "video_id"
 try:
     transcript_list = YouTubeTranscriptApi.get_transcript(video_id, languages=["Langu"])
@@ -47,9 +46,8 @@ parallel_chain = RunnableParallel({
 })  
 parser = StrOutputParser()
 main_chain = parallel_chain | prompt | llm | parser
-
-main_chain.invoke(text)  
-  st.info(llm_with_tools.invoke(messages).content)
+text = input_text 
+  st.info(main_chain.invoke(text))
 with st.form('my_form'):
   text = st.text_area('Enter text:', 'Can you summarize the video')
   submitted = st.form_submit_button('Submit')
