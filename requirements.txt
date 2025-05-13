@@ -1,0 +1,6 @@
+youtube-transcript-api
+langchain
+langchain-openai
+faiss-cpu
+openai
+tiktoken
