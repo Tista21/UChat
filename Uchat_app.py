@@ -7,9 +7,9 @@ from langchain_core.prompts import PromptTemplate
 from langchain_core.runnables import RunnableParallel, RunnablePassthrough, RunnableLambda
 from langchain_core.output_parsers import StrOutputParser
 st.title('UChat')
-openai_api_key = st.sidebar.text_input('OpenAI API Key')
-video_id = st.sidebar.text_input('Enter video ID')
-Langu = st.sidebar.text_input('Enter language code')
+openai_api_key = st.sidebar.text_input('OpenAI API Key', type="password")
+video_id = st.sidebar.text_input('Enter YouTube Video ID')
+language_code = st.sidebar.text_input('Enter language code (e.g., "en")')
 def generate_response(input_text):
   video_id = "video_id"
 try:
@@ -49,9 +49,13 @@ main_chain = parallel_chain | prompt | llm | parser
 text = input_text 
   st.info(main_chain.invoke(text))
 with st.form('my_form'):
-  text = st.text_area('Enter text:', 'Can you summarize the video')
-  submitted = st.form_submit_button('Submit')
-  if not openai_api_key.startswith('sk-'):
-    st.warning('Please enter your OpenAI API key!', icon='⚠')
-  if submitted and openai_api_key.startswith('sk-'):
-    generate_response(text)
+    input_text = st.text_area('Enter your question:', 'Can you summarize the video?')
+    submitted = st.form_submit_button('Submit')
+    if not openai_api_key.startswith('sk-'):
+        st.warning('Please enter your OpenAI API key!', icon='⚠')
+    elif submitted:
+        if not video_id or not language_code:
+            st.warning('Please provide both video ID and language code.', icon='⚠')
+        else:
+            result = generate_response(input_text, video_id, language_code)
+            st.info(result)
