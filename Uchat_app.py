@@ -57,7 +57,6 @@ def generate_response(input_text, video_id, language_code):
 with st.form('my_form'):
     input_text = st.text_area('Enter your question:', 'Can you summarize the video?')
     submitted = st.form_submit_button('Submit')
-
     if not openai_api_key.startswith('sk-'):
         st.warning('Please enter your OpenAI API key!', icon='⚠')
     elif submitted:
